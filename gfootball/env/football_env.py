@@ -30,6 +30,7 @@ from gfootball.env import football_env_core
 from gfootball.env import observation_rotation
 import gym
 import numpy as np
+import pickle
 
 class FootballEnv(gym.Env):
   """Allows multiple players to play in the same environment."""
@@ -47,6 +48,9 @@ class FootballEnv(gym.Env):
     self._env = football_env_core.FootballEnvCore(self._config)
     self._num_actions = len(football_action_set.get_action_set(self._config))
     self._cached_observation = None
+    self.stateHist = []
+    self.actionHist = []
+    self.episodeCnt = 0
 
   @property
   def action_space(self):
@@ -139,7 +143,7 @@ class FootballEnv(gym.Env):
 
   def _get_actions(self):
     obs = self._env.observation()
-    print(obs)
+    self.stateHist.append(obs)
     left_actions = []
     right_actions = []
     left_player_position = 0
@@ -162,6 +166,7 @@ class FootballEnv(gym.Env):
       left_actions.extend(a[:player.num_controlled_left_players()])
       right_actions.extend(a[player.num_controlled_left_players():])
     actions = left_actions + right_actions
+    self.actionHist.append(actions)
     return actions
 
   def step(self, action):
@@ -184,6 +189,11 @@ class FootballEnv(gym.Env):
             {'score_reward': score_reward})
 
   def reset(self):
+    self.episodeCnt = self.episodeCnt + 1
+    f = open("/content/temp" + str(self.episodeCnt), "wb")
+    pickle.dump(self.actionHist,f)
+    pickle.dump(self.stateHist,f)
+    f.close()
     self._env.reset()
     for player in self._players:
       player.reset()
