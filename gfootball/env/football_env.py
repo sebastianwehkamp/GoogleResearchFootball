@@ -139,6 +139,7 @@ class FootballEnv(gym.Env):
 
   def _get_actions(self):
     obs = self._env.observation()
+    print(obs)
     left_actions = []
     right_actions = []
     left_player_position = 0
