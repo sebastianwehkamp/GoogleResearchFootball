@@ -190,7 +190,7 @@ class FootballEnv(gym.Env):
 
   def reset(self):
     self.episodeCnt = self.episodeCnt + 1
-    f = open("/content/temp" + str(self.episodeCnt), "wb")
+    f = open("/content/temp/Episode-" + str(self.episodeCnt), "wb")
     pickle.dump(self.actionHist,f)
     pickle.dump(self.stateHist,f)
     f.close()
