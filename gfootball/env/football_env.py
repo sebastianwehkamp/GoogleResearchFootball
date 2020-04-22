@@ -192,8 +192,8 @@ class FootballEnv(gym.Env):
   def reset(self):
     self.episodeCnt = self.episodeCnt + 1
     f = open("/content/temp/Episode-" + str(self.episodeCnt), "wb")
-    compress_pickle.dump(self.actionHist,f)
-    compress_pickle.dump(self.stateHist,f)
+    compress_pickle.dump(self.actionHist,f, compression="lzma")
+    compress_pickle.dump(self.stateHist,f, compression="lzma")
     f.close()
     self._env.reset()
     for player in self._players:
