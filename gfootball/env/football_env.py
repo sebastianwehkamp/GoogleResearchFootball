@@ -166,7 +166,7 @@ class FootballEnv(gym.Env):
       left_actions.extend(a[:player.num_controlled_left_players()])
       right_actions.extend(a[player.num_controlled_left_players():])
     actions = left_actions + right_actions
-    self.actionHist.append(actions)
+    self.actionHist.append(left_actions)
     return actions
 
   def step(self, action):
