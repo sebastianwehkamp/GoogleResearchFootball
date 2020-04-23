@@ -31,7 +31,6 @@ from gfootball.env import observation_rotation
 import gym
 import numpy as np
 import pickle
-import compress_pickle
 
 class FootballEnv(gym.Env):
   """Allows multiple players to play in the same environment."""
@@ -192,8 +191,8 @@ class FootballEnv(gym.Env):
   def reset(self):
     self.episodeCnt = self.episodeCnt + 1
     f = open("/content/temp/Episode-" + str(self.episodeCnt), "wb")
-    compress_pickle.dump(self.actionHist,f, compression="lzma")
-    compress_pickle.dump(self.stateHist,f, compression="lzma")
+    pickle.dump(self.actionHist,f)
+    pickle.dump(self.stateHist,f)
     f.close()
     self._env.reset()
     for player in self._players:
