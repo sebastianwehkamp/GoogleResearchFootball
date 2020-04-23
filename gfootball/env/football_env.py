@@ -198,6 +198,8 @@ class FootballEnv(gym.Env):
     for player in self._players:
       player.reset()
     self._cached_observation = None
+    self.stateHist = []
+    self.actionHist = []
     return self.observation()
 
   def observation(self):
